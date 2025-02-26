@@ -2,13 +2,13 @@
 
 > plz set u token
 
-![alt text](demo_bot.png)
-![alt text](demo_bot2.png)
-![alt text](demo_flask.png)
-![alt text](flask_editor_links.png)
-![alt text](flask_logs.png)
-![alt text](flask_pics1.png)
-![alt text](flask_pics2.png)
-![alt text](flask_pics3.png)
-![alt text](flask_settings.png)
-![alt text](flask_users.png)
+![alt text](demo/demo_bot.png)
+![alt text](demo/demo_bot2.png)
+![alt text](demo/demo_flask.png)
+![alt text](demo/flask_editor_links.png)
+![alt text](demo/flask_logs.png)
+![alt text](demo/flask_pics1.png)
+![alt text](demo/flask_pics2.png)
+![alt text](demo/flask_pics3.png)
+![alt text](demo/flask_settings.png)
+![alt text](demo/flask_users.png)
