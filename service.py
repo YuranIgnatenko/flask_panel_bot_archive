@@ -16,6 +16,7 @@ from datetime import datetime
 from parserservice import *
 from urllib.request import urlopen
 
+import config
 
 ################################
 
@@ -80,8 +81,8 @@ class StorageUsers():
 
 
 class StorageLogs():
-	def __init__(self):
-		self.namefile = "historylogs.txt"
+	def __init__(self, conf:config.Config) -> None:
+		self.namefile = conf.get("file_log")
 		self.data = []
 		self.update()
 	def update(self):
@@ -103,13 +104,13 @@ class Service():
 	def __init__(self, conf, chan, storage_users):
 		self.conf = conf
 		self.chan = chan
-		self.conf.bot_token = self.conf.bot_token
+		self.conf.bot_token = self.conf.get("bot_token")
 		self.flagSelectedID = 0
 		self.flagSelectedValue = ""
 		self.storage_users = storage_users
-		self.flagFileUsers = self.conf.namefile_users
-		self.flagFileHistoryLogs = self.conf.namefile_historylogs
-		self.flagPswdAdmin = conf.bot_admin_password
+		self.flagFileUsers = self.conf.get("file_users")
+		self.flagFileHistoryLogs = self.conf.get("file_log")
+		self.flagPswdAdmin = self.conf.get("bot_admin_password")
 		self.flagAdminID = 0
 
 		bot = telebot.TeleBot(self.conf.bot_token)
