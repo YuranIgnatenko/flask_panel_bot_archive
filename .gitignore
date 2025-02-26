@@ -1,2 +1,3 @@
 # list ignore files
-config.txt
+config.json
+__pycache__/
