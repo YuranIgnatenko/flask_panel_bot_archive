@@ -17,7 +17,7 @@ from parserservice import *
 from urllib.request import urlopen
 
 import config
-
+from models import *
 ################################
 
 msgcode1 = "вход как админ"
@@ -26,81 +26,7 @@ msgcode3 = "запуск бота"
 msgcode4 = "не найден в базе"
 msgcode5 = "остановка бота"
 
-################################
-################################
-
-class RowLog():
-	def __init__(self, key, date,chat_id,info):
-		self.key,self.date,self.chat_id,self.info = key,date,chat_id,info
-
-class RowUser():
-	def __init__(self, key, username,chat_id,category,date):
-		self.key,self.username = key, username
-		self.chat_id,self.category = chat_id,category,
-		self.date = date
-		self.flagStarted = False
-
-class RowImage():
-	def __init__(self, category, link):
-		self.category, self.link = category, link
-
-class StorageImages():
-	def __init__(self):
-		self.data = []
-	def update(self, array_links):
-		self.data = []
-		for link in array_links:
-			self.data.append(RowImage("Люди",link))
-
-
-class StorageUsers():
-	def __init__(self):
-		self.namefile = "users.txt"
-		self.data = []
-		self.update()
-
-	def update(self):
-		self.data = []
-		with open(self.namefile, "r") as file:
-			temp = file.read().split("\n")
-		k = 0
-		for row in temp:
-			k += 1
-			if len(row) < 5: continue
-			line = row.split("---")
-			key, username,chat_id, category, date = k, line[0], line[1], line[2], line[3]
-			self.data.append(RowUser(key, username,chat_id, category, date))
-			
-		self.data.reverse()
-
-	def save(self):
-		with open(self.namefile, 'w')as file:
-			for user in self.data:
-				file.write(f"{user.username}---{user.chat_id}---{user.category}---{user.date}\n")
-
-
-
-class StorageLogs():
-	def __init__(self, conf:config.Config) -> None:
-		self.namefile = conf.get("file_log")
-		self.data = []
-		self.update()
-	def update(self):
-		with open(self.namefile, "r") as file:
-			temp = file.read().split("\n")
-		k = 0
-		for row in temp:
-			k += 1
-			if len(row) < 5: continue
-			line = row.split("] [")
-			key, date, chat_id, info = k, line[0][1:], line[1], line[2][:-2]
-			self.data.append(RowLog(key,date,chat_id,info))
-			
-		self.data.reverse()
-
-		
-
-class Service():
+class BotService():
 	def __init__(self, conf, chan, storage_users):
 		self.conf = conf
 		self.chan = chan
@@ -128,7 +54,7 @@ class Service():
 					return
 
 			self.add_log(self.rec_event(mcid,msgcode4))
-			self.storage_users.data.append(RowUser(len(self.storage_users.data),username,mcid,"Люди",str(datetime.now())))
+			self.storage_users.data.append(RowRecordUser(len(self.storage_users.data),username,mcid,"Люди",str(datetime.now())))
 			self.save_userdb(self.storage_users.data)
 			self.bot.send_message(mcid,text="Управление",reply_markup=panel_user_menu())
 

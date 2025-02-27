@@ -1,5 +1,0 @@
-bot_token---test
-bot_name---@name_bot
-bot_last_started---00:00:00
-bot_status---False
-bot_admin_password---1234@

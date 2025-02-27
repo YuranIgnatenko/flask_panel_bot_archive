@@ -1,24 +1,26 @@
 from flask import Flask, request
 from flask import render_template
 
-from  service import Service, StorageLogs, StorageUsers, RowUser, StorageImages
+from  botservice import BotService, StorageRowRecordLogs, StorageRowRecordUsers, RowRecordUser, StorageRowRecordImages
 import parserservice
 import threading
 import queue
 import config
 from random import randint
 import sys
+from parserservice import ParserService
+from models import DataImage
 
 class WebApp():
-	def __init__(self, conf:config.Config, service:Service, storage_images:StorageImages, 
-		storage_logs:StorageLogs, storage_users:StorageUsers) -> None:
+	def __init__(self, chan:queue.Queue, conf:config.Config, service:BotService, storage_images:StorageRowRecordImages, 
+		storage_logs:StorageRowRecordLogs, storage_users:StorageRowRecordUsers) -> None:
 
 		self.app = Flask(__name__)
 		self.conf = conf
-		self.service = service
+		self.parser_service = ParserService(conf.namefile, "categories.json")
 		self.storage_images, self.storage_logs, self.storage_users = storage_images, storage_logs, storage_users
-		self.new_out = []
-		self.data_out = []
+		self.bot_service = BotService(conf, chan, self.storage_users)
+		self.collect_images = []
 		self.category_value = self.conf.get("category_value")
 		self.count_pic_value = self.conf.get("count_pic_value")
 		self.flagLaunchBot = False
@@ -62,36 +64,6 @@ class WebApp():
 		# 		self.conf.save()
 		# 		return self.render_settings()
 
-		# @self.app.route('/settings_reset')
-		# def settings_reset():
-		# 	self.conf.reset()
-		# 	return self.render_settings()
-
-		# @self.app.route('/settings_launch_bot')
-		# def settings_launch_bot():
-		# 	return self.render_settings()
-
-		# @self.app.route('/settings_stop_bot')
-		# def settings_stop_bot():
-		# 	return self.render_settings()
-
-		# @self.app.route('/settings_launch_parser')
-		# def settings_launch_parser():
-		# 	return self.render_settings()
-
-		# @self.app.route('/settings_stop_parser')
-		# def settings_stop_parser():
-		# 	return self.render_settings()
-
-		# @self.app.route('/settings_restart_app')
-		# def settings_restart_app():
-		# 	return self.render_settings()
-
-		# @self.app.route('/settings_send_test_notify')
-		# def settings_send_test_notify():
-		# 	return self.render_settings()
-
-
 		@self.app.route('/dash_panel')
 		def dash_panel() -> str:
 			return render_template('dash_panel.html')
@@ -102,29 +74,7 @@ class WebApp():
 
 		@self.app.route('/desk_space_random_pic')
 		def desk_space_random_pic() -> str:
-			class DataImage():
-				def __init__(self, index,link):
-					self.index = index
-					self.link = link
-
-			dict_category = parserservice.category_links()
-			def run_scrap():
-				parserservice.category_links()
-				iter_c = 5
-				for i in range(iter_c):
-					random_category = list(dict_category)[randint(0,len(list(dict_category))-1)]
-					url,r_page,r_href = parserservice.get_r_page_href(random_category)
-					out = parserservice.get_href_content_online(url,r_page,r_href)
-					try:		        	
-						data_out.append(DataImage(i,out))
-					except Exception as e:
-						pass
-				return data_out
-
-			new_out = run_scrap()
-			
-			return render_template('desk_space.html', dt=new_out[::-1], category_value=category_value, count_pic_value=count_pic_value)
-
+			return render_template('desk_space.html', dt=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 
 
 		# @self.app.route('/desk_space_clear_conf')
@@ -134,35 +84,16 @@ class WebApp():
 		# 	count_pic_value = "1"
 		# 	return desk_space()
 
-		# @self.app.route('/desk_space_apply_conf', methods=['POST'])
-		# def desk_space_apply_conf():
-		# 	form = request.form
-		# 	category_value = form['category_value']
-		# 	count_pic_value = form['count_pic_value']	
-		# 	return desk_space()
+		@self.app.route('/desk_space_apply_conf', methods=['POST'])
+		def desk_space_apply_conf():
+			form = request.form
+			self.category_value = form['category_value']
+			self.count_pic_value = form['count_pic_value']	
+			return render_template('desk_space.html', dt=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 
 		@self.app.route('/desk_space')
 		def desk_space() -> str:
-
-			class DataImage():
-				def __init__(self, index,link):
-					self.index = index
-					self.link = link
-
-			dict_category = parserservice.category_links()
-			def run_scrap() -> list[DataImage]:
-				iter_c = int(self.count_pic_value)
-				for i in range(iter_c):
-					url,r_page,r_href = parserservice.get_r_page_href(self.category_value)
-					out = parserservice.get_href_content_online(url,r_page,r_href)
-					try:		        	
-						data_out.append(DataImage(i,out))
-					except Exception as e:pass
-				return data_out
-
-			new_out = run_scrap()
-			
-			return render_template('desk_space.html', dt=new_out[::-1], category_value=category_value, count_pic_value=count_pic_value)
+			return render_template('desk_space.html', dt=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 
 		@self.app.route('/logs')
 		def logs():
@@ -187,7 +118,7 @@ class WebApp():
 
 		@self.app.route('/parser')
 		def parser():
-			return render_template('parser.html',conf_parser=parserservice.conf_read())
+			return render_template('parser.html',conf_parser=f"{parserservice.conf_categories.to_dict()}")
 
 		# @self.app.route('/parser_apply', methods=['POST'])
 		# def parser_apply():
@@ -200,12 +131,18 @@ class WebApp():
 		# 	parserservice.conf_reset()
 		# 	return render_template('parser.html',conf_parser=parserservice.conf_read())
 
+	def get_image(self) -> list[DataImage]:
+		for index in range(int(self.count_pic_value)):
+			url_image = self.parser_service.get_url_random_page_from_category(self.category_value)
+			self.collect_images.append(DataImage(index,url_image))
+		return self.collect_images
+
 
 	def start_app(self, chan:queue.Queue) -> None:
 		self.app.run(debug=False)
 
 	def start_bot(self, chan:queue.Queue) -> None:
-		self.service.polling()
+		self.bot_service.polling()
 
 
 def main() -> None:
@@ -216,12 +153,12 @@ def main() -> None:
 		chan = queue.Queue()
 		chan_images = queue.Queue()
 		
-		storage_images = StorageImages()
-		storage_logs = StorageLogs(conf)
-		storage_users = StorageUsers()
-		service = Service(conf, chan, storage_users)
+		storage_images = StorageRowRecordImages()
+		storage_logs = StorageRowRecordLogs()
+		storage_users = StorageRowRecordUsers()
+		service = BotService(conf, chan, storage_users)
 
-		webapp = WebApp(conf, service, storage_images, storage_logs, storage_users)
+		webapp = WebApp(chan, conf, service, storage_images, storage_logs, storage_users)
 
 		def launch_threads() -> None:
 			thread_web_app = threading.Thread(target=webapp.start_app, args=(chan,))
