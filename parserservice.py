@@ -5,18 +5,12 @@ from botpanel import *
 import botpanel
 from random import randint
 import config
-import sys
+import sys, json
 
 class ParserService():
-	def __init__(self, file_config:str, file_categories:str) -> None:
-		self.conf = config.Config(file_config)
-		self.conf_categories = config.Config(file_categories)
-
-	def category_links(self) -> list[str]:
-		return self.conf_categories.data.keys()
-
-	def categories_url_json_to_dict(self) -> dict:
-		return self.conf_categories.to_dict()
+	def __init__(self, conf:config.Config) -> None:
+		self.conf = conf
+		self.conf_categories = config.Config(self.conf.get("file_categories"))
 
 	def shorten_url(self, url:str) -> str:
 		try: return pyshorteners.Shortener().clckru.short(url)
@@ -27,7 +21,7 @@ class ParserService():
 
 	def build_url_page_image(self, category_name:str, num_page:int=0) -> str:
 		# ex: https://world79.spcs.bio/sz/foto-i-kartinki/ljudi/p9 -- url page, not only image !
-		if num_page == 0: return f"{self.conf_categories.get("prefix_url")}{self.conf_categories.get("human")}"
+		if num_page == 0: return f"{self.conf_categories.get("prefix_url")}{self.conf_categories.get(category_name)}"
 		else: return f"{self.conf_categories.get("prefix_url")}{self.conf_categories.get(category_name)}/p{num_page}"
 
 	def get_count_pages(self, category_name:str) -> int:

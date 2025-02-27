@@ -23,9 +23,11 @@ class RowRecordImage():
 
 class StorageRowRecordImages():
 	def __init__(self) -> None:
+		# self.namefile = "image."
 		self.rows = []
 	def add(self, row:RowRecordImage):
 		self.rows.append(row)
+	
 
 class StorageRowRecordUsers():
 	def __init__(self) -> None:
@@ -43,7 +45,7 @@ class StorageRowRecordLogs():
 		self.rows.append(row)
 
 class DataImage():
-	def __init__(self, index, link):
+	def __init__(self, index, link) -> None:
 		self.index = index
 		self.link = link
 		

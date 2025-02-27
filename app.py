@@ -1,25 +1,30 @@
 from flask import Flask, request
 from flask import render_template
 
-from  botservice import BotService, StorageRowRecordLogs, StorageRowRecordUsers, RowRecordUser, StorageRowRecordImages
+from  botservice import BotService, ParserService, StorageRowRecordLogs, StorageRowRecordUsers, RowRecordUser, StorageRowRecordImages
 import parserservice
 import threading
 import queue
+
 import config
-from random import randint
+import logger
+import bd
+
 import sys
-from parserservice import ParserService
 from models import DataImage
 
 class WebApp():
-	def __init__(self, chan:queue.Queue, conf:config.Config, service:BotService, storage_images:StorageRowRecordImages, 
-		storage_logs:StorageRowRecordLogs, storage_users:StorageRowRecordUsers) -> None:
+	def __init__(self, chan:queue.Queue, conf:config.Config, bot_service:BotService, parser_service:ParserService, storage_images:StorageRowRecordImages, storage_logs:StorageRowRecordLogs, storage_users:StorageRowRecordUsers) -> None:
 
 		self.app = Flask(__name__)
 		self.conf = conf
-		self.parser_service = ParserService(conf.namefile, "categories.json")
+		with open(conf.get("file_log")) as file:
+			self.conf_log = file.read()
+		self.conf_users = config.Config(self.conf.get("file_users"))
+		self.conf_categories = config.Config(self.conf.get("file_categories"))
+		self.parser_service = parser_service
 		self.storage_images, self.storage_logs, self.storage_users = storage_images, storage_logs, storage_users
-		self.bot_service = BotService(conf, chan, self.storage_users)
+		self.bot_service = bot_service
 		self.collect_images = []
 		self.category_value = self.conf.get("category_value")
 		self.count_pic_value = self.conf.get("count_pic_value")
@@ -97,13 +102,13 @@ class WebApp():
 
 		@self.app.route('/logs')
 		def logs():
-			storage_logs.update()
-			return render_template('logs.html', dt=storage_logs.data)
+			# self.storage_logs.update()
+			return render_template('logs.html', dt=self.conf_log)
 
 		@self.app.route('/users')
 		def users():
-			self.storage_users.update()
-			return render_template('users.html', dt=storage_users.data)
+			# self.storage_users.update()
+			return render_template('users.html', dt=self.conf_users.to_dict())
 
 		# @self.app.route('/users_apply', methods=['POST'])
 		# def users_apply():
@@ -118,18 +123,18 @@ class WebApp():
 
 		@self.app.route('/parser')
 		def parser():
-			return render_template('parser.html',conf_parser=f"{parserservice.conf_categories.to_dict()}")
+			return render_template('parser.html',conf_parser=self.conf_categories.to_str())
 
 		# @self.app.route('/parser_apply', methods=['POST'])
 		# def parser_apply():
 		# 	data = request.form['text']
-		# 	parserservice.conf_write("parser.txt", data)
-		# 	return render_template('parser.html',conf_parser=parserservice.conf_read())
+		# 	self.parser_service.conf_write("parser.txt", data)
+		# 	return render_template('parser.html',conf_parser=self.parser_service.conf_read())
 
 		# @self.app.route('/parser_reset')
 		# def parser_reset():
-		# 	parserservice.conf_reset()
-		# 	return render_template('parser.html',conf_parser=parserservice.conf_read())
+		# 	self.parser_service.conf_reset()
+		# 	return render_template('parser.html',conf_parser=self.parser_service.conf_read())
 
 	def get_image(self) -> list[DataImage]:
 		for index in range(int(self.count_pic_value)):
@@ -146,24 +151,28 @@ class WebApp():
 
 
 def main() -> None:
-	if len(sys.argv)>1:
+	if len(sys.argv) > 1:
 		arg_namefile_config = sys.argv[1]
-		conf = config.Config(sys.argv[1])
 
-		chan = queue.Queue()
-		chan_images = queue.Queue()
+		conf = config.Config(sys.argv[1])
+		log = logger.Logger(conf)
+		ctrl_bd = bd.ControlBD(conf)
+
+		chan_signal_work_status = queue.Queue()
+		# chan_images = queue.Queue()
 		
 		storage_images = StorageRowRecordImages()
 		storage_logs = StorageRowRecordLogs()
 		storage_users = StorageRowRecordUsers()
-		service = BotService(conf, chan, storage_users)
+		bot_service = BotService(chan_signal_work_status, conf, log, ctrl_bd, storage_users)
+		parser_service = parserservice.ParserService(conf)
 
-		webapp = WebApp(chan, conf, service, storage_images, storage_logs, storage_users)
+		webapp = WebApp(chan_signal_work_status, conf, bot_service, parser_service, storage_images, storage_logs, storage_users)
 
 		def launch_threads() -> None:
-			thread_web_app = threading.Thread(target=webapp.start_app, args=(chan,))
-			thread_tg_bot = threading.Thread(target=webapp.start_bot, args=(chan,))
-			thread_receiver_chan = threading.Thread(target=webapp.receiver_chan_status_bot, args=(chan,))
+			thread_web_app = threading.Thread(target=webapp.start_app, args=(chan_signal_work_status,))
+			thread_tg_bot = threading.Thread(target=webapp.start_bot, args=(chan_signal_work_status,))
+			thread_receiver_chan = threading.Thread(target=webapp.receiver_chan_status_bot, args=(chan_signal_work_status,))
 
 			thread_web_app.start()
 			thread_tg_bot.start()

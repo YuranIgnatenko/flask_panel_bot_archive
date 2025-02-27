@@ -8,12 +8,16 @@ class Config():
 
 	def to_dict(self) -> dict:
 		return self.data
+		
+	def to_str(self) -> str:
+		with open(self.namefile, "r") as temp_file: return temp_file.read()
 
 	def get(self, key:str) -> str:
 		return f"{self.to_dict()[key]}"
 
-	def replace_save(self, key:str, value:str) -> None:
-		self.data[key] = value
-		with open(namefile, 'w') as f:
-			self.data = json.load(f)
+	# def replace_save(self, key:str, value:str) -> None:
+	# 	self.data[key] = value
+	# 	with open(namefile, 'w') as f:
+	# 		self.data = json.load(f)
+
 

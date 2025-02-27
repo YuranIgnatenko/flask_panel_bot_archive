@@ -16,8 +16,11 @@ from datetime import datetime
 from parserservice import *
 from urllib.request import urlopen
 
-import config
+import queue
 from models import *
+import logger
+import bd
+import config
 ################################
 
 msgcode1 = "вход как админ"
@@ -27,8 +30,10 @@ msgcode4 = "не найден в базе"
 msgcode5 = "остановка бота"
 
 class BotService():
-	def __init__(self, conf, chan, storage_users):
+	def __init__(self, chan:queue.Queue, conf:config.Config, log:logger.Logger, ctrl_bd:bd.ControlBD, storage_users:StorageRowRecordUsers) -> None:
 		self.conf = conf
+		self.log = log
+		self.ctrl_bd = ctrl_bd
 		self.chan = chan
 		self.conf.bot_token = self.conf.get("bot_token")
 		self.flagSelectedID = 0
@@ -43,72 +48,72 @@ class BotService():
 		self.bot = bot
 
 		@bot.message_handler(commands=['start'])
-		def start(message):
+		def start(message) -> None:
 			self.chan.put("start")
-			mcid = message.chat.id
-			username = message.from_user.first_name
-			self.add_log(self.rec_event(mcid,msgcode3))
-			mcid = int(mcid) 
+
+			msg_chat_id = int(message.chat.id)
+			msg_user_name = message.from_user.first_name
+			# self.add_log(self.rec_event(msg_chat_id,msgcode3))
 			for user in self.storage_users.data:
-				if str(mcid) == str(user.chat_id):
+				if str(msg_chat_id) == str(user.chat_id):
 					return
 
-			self.add_log(self.rec_event(mcid,msgcode4))
-			self.storage_users.data.append(RowRecordUser(len(self.storage_users.data),username,mcid,"Люди",str(datetime.now())))
+			self.add_log(self.rec_event(msg_chat_id,msgcode4))
+			self.storage_users.data.append(RowRecordUser(len(self.storage_users.data),msg_user_name,msg_chat_id,"Люди",str(datetime.now())))
 			self.save_userdb(self.storage_users.data)
-			self.bot.send_message(mcid,text="Управление",reply_markup=panel_user_menu())
+			self.bot.send_message(msg_chat_id,text="Управление",reply_markup=panel_user_menu())
 
 					
 		@bot.message_handler(content_types=['text'])
-		def func(message):			
+		def func(message) -> None:			
 
-			mcid = message.chat.id
+			msg_chat_id = message.chat.id
 			mt = message.text
 			mn = message.from_user.first_name
 				
 			if mt == "Запустить":
 				for user in self.storage_users.data:
-					if str(user.chat_id) == str(mcid):
+					if str(user.chat_id) == str(msg_chat_id):
 						user.flagStarted = True
-						self.run_sender(user, mcid)   
+						self.run_sender(user, msg_chat_id)   
 					
 			if mt == "Остановить" or mt == "/abort":
 				for user in self.storage_users.data:
-					if str(user.chat_id) == str(mcid):
+					if str(user.chat_id) == str(msg_chat_id):
 						user.flagStarted = False
-				self.add_log(self.rec_event(mcid,msgcode5))
+				self.add_log(self.rec_event(msg_chat_id,msgcode5))
 						
 			if mt == self.flagPswdAdmin:
-				self.flagAdminID = mcid  
-				self.add_log(self.rec_event(mcid,msgcode1))
-				self.bot.send_message(mcid,text="Режим Администратора",reply_markup=panel_admin_menu())    	
+				self.flagAdminID = msg_chat_id  
+				self.add_log(self.rec_event(msg_chat_id,msgcode1))
+				self.bot.send_message(msg_chat_id,text="Режим Администратора",reply_markup=panel_admin_menu())    	
 			
-			if self.flagAdminID != mcid: return
+			if self.flagAdminID != msg_chat_id: return
 			
 			if str(mt).startswith("ID:"):
 				val_id = int(mt.split("ID:")[1].split(':')[0])
 				self.flagSelectedID = val_id
-				self.bot.send_message(mcid,text=val_id,reply_markup=panel_admin_set_value())
+				self.bot.send_message(msg_chat_id,text=val_id,reply_markup=panel_admin_set_value())
 				
 			elif str(mt).startswith("+"):
 				val_set = mt
 				self.flagSelectedValue = val_set
 				t = f"Применить ?\n\nID:{self.flagSelectedID}\n{self.flagSelectedValue}"
-				self.add_log(self.rec_event(mcid,"изменил доступ на:"+self.flagSelectedValue))
-				self.bot.send_message(mcid,text=t,reply_markup=panel_admin_set_value())
+				self.add_log(self.rec_event(msg_chat_id,"изменил доступ на:"+self.flagSelectedValue))
+				self.bot.send_message(msg_chat_id,text=t,reply_markup=panel_admin_set_value())
 		
 				
 			elif mt == "Меню":
-				self.bot.send_message(mcid,text="ок",reply_markup=panel_admin_menu())    	
+				self.bot.send_message(msg_chat_id,text="ок",reply_markup=panel_admin_menu())    	
 			elif mt == "Управление доступом":
-				self.bot.send_message(mcid,text="Список Users ID",reply_markup=panel_admin_users(self.storage_users.data))      	
+				self.bot.send_message(msg_chat_id,text="Список Users ID",reply_markup=panel_admin_users(self.storage_users.data))      	
 			elif mt == "Сохранить":
 				for user in self.storage_users.data:
 					if str(user.chat_id) == str(self.flagSelectedID):
 						user.category = self.flagSelectedValue
 				self.save_userdb(self.storage_users.data)
-				self.add_log(self.rec_event(mcid,"сохранен с задачей"+self.flagSelectedValue))
-				self.bot.send_message(mcid,text="Выполнено !",reply_markup=panel_admin_users(self.storage_users.data))  
+				self.add_log(self.rec_event(msg_chat_id,"сохранен с задачей"+self.flagSelectedValue))
+				self.bot.send_message(msg_chat_id,text="Выполнено !",reply_markup=panel_admin_users(self.storage_users.data))  
 				
 			elif mt == "Отчет логи":
 				data = self.read_logs() 
@@ -118,15 +123,15 @@ class BotService():
 					c+=1
 					if c >= 30: break
 					s += line+"\n"  	
-				self.bot.send_message(mcid,text=f"{s}",reply_markup=panel_admin_menu())
+				self.bot.send_message(msg_chat_id,text=f"{s}",reply_markup=panel_admin_menu())
 			elif mt == "Отчет пользователи":
 				data = self.read_userdb() 
 				s = ""
 				for line in data:
 					s += line+"\n\n"  	
-				self.bot.send_message(mcid,text=f"{s}",reply_markup=panel_admin_menu())
+				self.bot.send_message(msg_chat_id,text=f"{s}",reply_markup=panel_admin_menu())
 			elif mt == "Отчет по ссылкам":
-				self.bot.send_message(mcid,text=f"{self.about_links()}",reply_markup=panel_admin_menu())    
+				self.bot.send_message(msg_chat_id,text=f"{self.about_links()}",reply_markup=panel_admin_menu())    
 
 
 	def about_links(self):
@@ -136,8 +141,8 @@ class BotService():
 		return s
 
 
-	def rec_event(self, mcid,log):
-		return f"[{datetime.now()}] [{mcid}] [{log}]" 
+	def rec_event(self, msg_chat_id,log):
+		return f"[{datetime.now()}] [{msg_chat_id}] [{log}]" 
 
 	def add_log(self, record):
 		with open(self.flagFileHistoryLogs, 'a')as file:
@@ -167,7 +172,7 @@ class BotService():
 			open(self.flagFileUsers, 'w')
 			return
 
-	def run_sender(self, user, mcid):
+	def run_sender(self, user, msg_chat_id):
 		self.add_log(self.rec_event(user.chat_id,msgcode2))
 		tmp_b = 0
 		tmp_a = random.randint(0,tmp_b)
