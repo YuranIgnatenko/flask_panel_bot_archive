@@ -19,18 +19,24 @@ class WebApp():
 		self.conf_users = Config(self.conf_base.get("file_users"))
 
 		self.conf_categories = Config(self.conf_base.get("file_categories"))
-		self.parser_service = parser_service
-		self.bot_service = bot_service
-		self.collect_images = []
 		self.category_value = self.conf_base.get("category_value")
 		self.count_pic_value = self.conf_base.get("count_pic_value")
+
+		self.parser_service = parser_service
+		self.bot_service = bot_service
+		
+		self.collect_images = []
+		
 		self.flagLaunchBot = False
 
 		self.setup_routes()
 
-	def read_file_log(self):
+	def read_file_log(self) -> str:
 		with open(self.conf_base.get("file_log")) as file:
-			return file.read()
+			data_file = file.read().split("\n")[::-1]
+			result = ''.join(f"{line}\n\n" for line in data_file)
+			return result
+			
 
 	def receiver_chan_status_bot(self, chan:queue.Queue) -> None:
 		logging.info("start receiver channel")
@@ -60,14 +66,14 @@ class WebApp():
 		def settings() -> str:
 			return self.render_settings()
 
-		# @self.app.route('/settings_apply', methods=['POST'])
-		# def settings_apply():
-		# 		self.conf_base.bot_token = request.form['bot_token']
-		# 		self.conf_base.bot_name = request.form['bot_name']
-		# 		self.conf_base.bot_last_started = request.form['bot_last_started']
-		# 		self.conf_base.bot_status = request.form['bot_status']
-		# 		self.conf_base.save()
-		# 		return self.render_settings()
+		@self.app.route('/settings_apply', methods=['POST'])
+		def settings_apply() -> str:
+				self.conf_base.bot_token = request.form['bot_token']
+				self.conf_base.bot_name = request.form['bot_name']
+				self.conf_base.bot_last_started = request.form['bot_last_started']
+				self.conf_base.bot_status = request.form['bot_status']
+				self.conf_base.resave()
+				return self.render_settings()
 
 		@self.app.route('/dash_panel')
 		def dash_panel() -> str:
@@ -81,13 +87,12 @@ class WebApp():
 		def desk_space_random_pic() -> str:
 			return render_template('desk_space.html', dt=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 
-
-		# @self.app.route('/desk_space_clear_conf')
-		# def desk_space_clear_conf():
-		# 	self.new_out, self.data_out = [],[]
-		# 	category_value = "+Люди"
-		# 	count_pic_value = "1"
-		# 	return desk_space()
+		@self.app.route('/desk_space_clear_conf')
+		def desk_space_clear_conf() -> str:
+			self.collect_imagest = []
+			category_value = "human"
+			count_pic_value = "1"
+			return desk_space()
 
 		@self.app.route('/desk_space_apply_conf', methods=['POST'])
 		def desk_space_apply_conf():
@@ -103,22 +108,17 @@ class WebApp():
 		@self.app.route('/logs')
 		def logs():
 			# self.storage_logs.update()
-			return render_template('logs.html', dt=self.conf_log)
+			return render_template('logs.html', logs_text=self.conf_log)
 
 		@self.app.route('/users')
 		def users():
-			# self.storage_users.update()
-			return render_template('users.html', dt=self.conf_users.to_dict())
+			return render_template('users.html', conf_users=self.conf_users.to_str())
 
-		# @self.app.route('/users_apply', methods=['POST'])
-		# def users_apply():
-		# 	form = request.form
-		# 	for i in form:
-		# 		for u in storage_users.data:
-		# 			if str(u.chat_id) == str(i):
-		# 				u.category = form[i]
-		# 	storage_users.save()
-		# 	return render_template('users.html', dt=storage_users.data)
+		@self.app.route('/users_apply', methods=['POST'])
+		def users_apply():
+			data_str = request.form['text']
+			self.conf_users.rewrite_from_str(data_str)
+			return render_template('users.html', conf_users=self.conf_users.to_str())
 
 
 		@self.app.route('/parser')

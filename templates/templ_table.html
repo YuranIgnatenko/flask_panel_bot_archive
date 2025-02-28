@@ -178,26 +178,41 @@ p {
 }
 
 	</style>
+
+
 <div class='container'>
 	<table>
-	  <thead>
-		<tr>
-		  <th>Editor USERs</th>
-		</tr>
-	  </thead>
-	  <tbody>
-		<form method="POST" action="/users_apply">
-		  <tr>
-			<td><textarea class="button_slide slide_right" rows="20" name="text">{{ conf_users }}</textarea></td>
-		  </tr>
-		<tr>
-		<tr>
-		  <td><input class="button_slide slide_right" type="submit" value="APPLY IN FILE CONF USERS"></td>
-	  </form>
-	  </tbody>
+		<thead>
+			<tr>
+				<!-- <th>№</th> -->
+				<th>Username</th>
+				<th>ID chat</th>
+				<th>Category</th>
+				<th>flag Started</th>
+			</tr>
+		</thead>
+		<tbody>
+			<form method="POST" action="/users_apply">
+				{% for dict_item in dt %}
+						{% for key, value in dict_item.items() %}
+						<tr>
+							<!-- <td>{{ item.key }}</td> -->
+							<td><input class="input_slide slide_right" type="text" value="{{ key }}"></td>
+							<td><input class="input_slide slide_right" type="text" value="{{ value }}"></td>
+							<!-- <td><input class="input_slide slide_right" type="text" value="{{ item["category"] }}" name="{{ item.chat_id }}" id="{{ item.category }}"></td>
+							<td><input class="input_slide slide_right" type="text" value="{{ item["flagStarted"] }}"></td> -->
+						</tr>
+						{% endfor %}
+				{% endfor %}
+
+			<tr>
+				<td colspan="5"><input class="button_slide slide_right" type="submit" value="SAVE"></td>
+			</tr>
+		</form>
+		</tbody>
 	</table>
-  </div>  
-  
+</div>  
+
 
 	 <input type="checkbox" id="check">
 	 <label for="check">

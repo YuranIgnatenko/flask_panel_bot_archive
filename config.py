@@ -20,6 +20,11 @@ class Config():
 	def get(self, key:str) -> str:
 		return f"{self.data[key]}"
 	
+	def rewrite_from_str(self, str_data:str) -> None:
+		dict_data = json.loads(str_data)
+		with open(self.namefile, 'w', encoding='utf-8') as f:
+			json.dump(dict_data, f, ensure_ascii=False, indent=4)
+
 	def rewrite(self, dict_data:dict) -> None:
 		with open(self.namefile, 'w', encoding='utf-8') as f:
 			json.dump(dict_data, f, ensure_ascii=False, indent=4)

@@ -179,30 +179,25 @@ p {
 
   </style>
 
-
 <div class='container'>
   <table>
     <thead>
       <tr>
-        <th>№</th>
-        <th>Datetime</th>
-        <th>ID chat</th>
-        <th>Log</th>
+        <th>History & Logs app</th>
       </tr>
     </thead>
     <tbody>
-
-      {% for item in dt: %}
+      <form method="POST" action="/logs_update">
         <tr>
-          <td>{{ item.key }}</td>
-          <td><input class="input_slide slide_right" type="text" value="{{ item.date }}" name="bot_name" id=""></td>
-          <td><input class="input_slide slide_right" type="text" value="{{ item.chat_id }}" name="bot_name" id=""></td>
-          <td><input class="input_slide slide_right" type="text" value="{{ item.info }}" name="bot_name" id=""></td>
-          
+          <td><textarea class="button_slide slide_right" rows="20" name="text">{{ logs_text }}</textarea></td>
         </tr>
-      {% endfor %}
-
-
+      <tr>
+      <tr>
+        <td><input class="button_slide slide_right" type="submit" value="APPLY IN FILE CONF PARSER"></td>
+      </tr>
+        <td><a href="/parser_reset"><input value="RESET ALL FIELDS (DEFAULT VALUES)" class="button_slide slide_right" type="button"></a></td>
+      </tr>
+    </form>
     </tbody>
   </table>
 </div>  
