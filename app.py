@@ -1,23 +1,24 @@
 from flask import Flask, request, render_template
 
+import argparse
+
 import logging
 import threading
 import queue
-import sys
 
 from telegram_bot_service import TelegramBotService, ParserSpcs
 from parser_service import ParserSpcs
 from config import Config
 
 class WebApp():
-	def __init__(self, chan:queue.Queue, conf:Config, bot_service:TelegramBotService, parser_service:ParserSpcs) -> None:
+	def __init__(self, chan:queue.Queue, conf_base:Config, bot_service:TelegramBotService, parser_service:ParserSpcs) -> None:
 		self.app = Flask(__name__)
 		
 		self.conf_base = conf_base
-		self.conf_log = read_file_log()
-		self.conf_users = config.Config(self.conf_base.get("file_users"))
+		self.conf_log = self.read_file_log()
+		self.conf_users = Config(self.conf_base.get("file_users"))
 
-		self.conf_categories = config.Config(self.conf_base.get("file_categories"))
+		self.conf_categories = Config(self.conf_base.get("file_categories"))
 		self.parser_service = parser_service
 		self.bot_service = bot_service
 		self.collect_images = []
@@ -135,7 +136,12 @@ class WebApp():
 		# 	self.parser_service.conf_reset()
 		# 	return render_template('parser.html',conf_parser=self.parser_service.conf_read())
 
-	def get_image(self) -> list[DataImage]:
+	def get_image(self) -> list[any]:
+
+		class DataImage:
+			def __init__(self, index, url) -> None:
+				self.index, self.url = index, url
+
 		for index in range(int(self.count_pic_value)):
 			url_image = self.parser_service.get_url_random_page_from_category(self.category_value)
 			self.collect_images.append(DataImage(index,url_image))
@@ -152,36 +158,35 @@ class WebApp():
 
 
 def main() -> None:
-	if len(sys.argv) > 1:
-		arg_namefile_config = sys.argv[1]
-		conf_base = config.Config(sys.argv[1])
+	arg_namefile_config = argparse.ArgumentParser()
+	arg_namefile_config.add_argument("-c", "--config", help="path file config", required=str)
+	params = arg_namefile_config.parse_args()
 
-		logging.basicConfig(filename=conf_base.get("file_log"), level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+	conf_base = Config(params.config)
 
-		chan_signal_work_status = queue.Queue()
-		
-		bot_service = TelegramBotService(chan_signal_work_status, conf_base)
-		parser_service = parser_service.ParserSpcs(conf_base)
+	logging.basicConfig(filename=conf_base.get("file_log"), level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
-		webapp = WebApp(chan_signal_work_status, conf_base, bot_service, parser_service)
+	chan_signal_work_status = queue.Queue()
+	
+	bot_service = TelegramBotService(chan_signal_work_status, conf_base)
+	parser_service = ParserSpcs(conf_base)
 
-		def launch_threads() -> None:
-			thread_web_app = threading.Thread(target=webapp.start_app, args=(chan_signal_work_status,))
-			thread_tg_bot = threading.Thread(target=webapp.start_bot, args=(chan_signal_work_status,))
-			thread_receiver_chan = threading.Thread(target=webapp.receiver_chan_status_bot, args=(chan_signal_work_status,))
+	webapp = WebApp(chan_signal_work_status, conf_base, bot_service, parser_service)
 
-			thread_web_app.start()
-			thread_tg_bot.start()
-			thread_receiver_chan.start()
+	def launch_threads() -> None:
+		thread_web_app = threading.Thread(target=webapp.start_app, args=(chan_signal_work_status,))
+		thread_tg_bot = threading.Thread(target=webapp.start_bot, args=(chan_signal_work_status,))
+		thread_receiver_chan = threading.Thread(target=webapp.receiver_chan_status_bot, args=(chan_signal_work_status,))
 
-			thread_web_app.join()
-			thread_tg_bot.join()
-			thread_receiver_chan.join()
+		thread_web_app.start()
+		thread_tg_bot.start()
+		thread_receiver_chan.start()
 
-		launch_threads()
-	else:
-		logging.error("Enter name file base config for setup params WebApp !")
-		return
+		thread_web_app.join()
+		thread_tg_bot.join()
+		thread_receiver_chan.join()
+
+	launch_threads()
 
 
 if __name__ == "__main__":main()

@@ -1,6 +1,6 @@
 from telebot import types, TeleBot
 
-import os,sys,random,time,queue
+import os,random,time,queue,argparse
 
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -11,7 +11,7 @@ import logging
 
 from config import Config
 from parser_service import ParserSpcs
-from storage import StorageJson, StorageTxt
+from storage import StorageJson
 from telegram_bot_markup import *
 
 class TelegramBotService():
@@ -166,25 +166,25 @@ class TelegramBotService():
 			except Exception as e:
 				logging.error(e)
 
-	### commands /Any*
 
-
-	
 	def polling(self):
 		self.bot.polling(none_stop=True)
 
 
 def main() -> None:
-	if len(sys.argv) > 1:
-		arg_namefile_config = sys.argv[1]
-		conf_base = Config(sys.argv[1])
+	arg_namefile_config = argparse.ArgumentParser()
+	arg_namefile_config.add_argument("-c", "--config", help="path file config", required=str)
+	params = arg_namefile_config.parse_args()
 
-		logging.basicConfig(filename=conf_base.get("file_log"), level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+	conf_base = Config(params.config)
 
-		chan_signal_work_status = queue.Queue()
-		
-		bot_service = TelegramBotService(chan_signal_work_status, conf_base)
-		bot_service.polling()
+	logging.basicConfig(filename=conf_base.get("file_log"), level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
+	chan_signal_work_status = queue.Queue()
+	
+	bot_service = TelegramBotService(chan_signal_work_status, conf_base)
+	bot_service.polling()
 
 
-if __name__ == "__main__":main()
+if __name__ == "__main__":
+	main()

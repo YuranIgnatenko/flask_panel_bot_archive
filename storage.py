@@ -31,8 +31,3 @@ class StorageJson():
 				if str(item_data[key]) == str(value):
 					return True
 		return False
-
-class StorageTxt():
-	def __init__(self, namefile:str) -> None:
-		self.namefile = namefile
-		with open(self.namefile, "r") as file: self.data = file.read()

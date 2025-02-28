@@ -20,7 +20,7 @@ class ParserSpcs():
 		return tools.get_random_number_page(max_page)
 
 	def build_url_page_image(self, category_name:str, num_page:int=0) -> str:
-		return tools.build_url_page_image(category_name, num_page)
+		return tools.build_url_page_image(self, category_name, num_page)
 
 	def get_count_pages(self, category_name:str) -> int:
 		url = self.build_url_page_image(category_name)

@@ -1,0 +1,442 @@
+2025-02-28 18:55:06,541 INFO root Thread-1 (start_app) : start web app
+2025-02-28 18:55:06,541 INFO root Thread-2 (start_bot) : start bot telegram
+2025-02-28 18:55:06,544 INFO root Thread-3 (receiver_chan_status_bot) : start receiver channel
+2025-02-28 18:55:06,547 DEBUG urllib3.connectionpool Thread-2 (start_bot) : Starting new HTTPS connection (1): api.telegram.org:443
+2025-02-28 18:55:06,575 INFO werkzeug Thread-1 (start_app) : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-02-28 18:55:06,575 INFO werkzeug Thread-1 (start_app) : [33mPress CTRL+C to quit[0m
+2025-02-28 18:55:07,196 DEBUG urllib3.connectionpool Thread-2 (start_bot) : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getMe HTTP/11" 200 270
+2025-02-28 18:55:07,203 DEBUG urllib3.connectionpool PollingThread : Starting new HTTPS connection (1): api.telegram.org:443
+2025-02-28 18:55:27,715 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:55:29,351 ERROR app Thread-4 (process_request_thread) : Exception on /desk_space [GET]
+Traceback (most recent call last):
+  File "C:\Users\EliteBook\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\app.py", line 100, in desk_space
+    return render_template('desk_space.html', dt=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
+                                                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\app.py", line 145, in get_image
+    url_image = self.parser_service.get_url_random_page_from_category(self.category_value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\parser_service.py", line 40, in get_url_random_page_from_category
+    max_page_category = self.get_count_pages(category_name)-1
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\parser_service.py", line 26, in get_count_pages
+    url = self.build_url_page_image(category_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\parser_service.py", line 23, in build_url_page_image
+    return tools.build_url_page_image(category_name, num_page)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\tools.py", line 14, in build_url_page_image
+    if num_page == 0: return f"{self.conf_categories.get("prefix_url")}{self.conf_categories.get(category_name)}"
+                                ^^^^
+NameError: name 'self' is not defined
+2025-02-28 18:55:29,360 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [28/Feb/2025 18:55:29] "[35m[1mGET /desk_space HTTP/1.1[0m" 500 -
+2025-02-28 18:55:29,549 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [28/Feb/2025 18:55:29] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-02-28 18:55:47,839 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:55:48,962 ERROR app Thread-5 (process_request_thread) : Exception on /desk_space [GET]
+Traceback (most recent call last):
+  File "C:\Users\EliteBook\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\app.py", line 100, in desk_space
+    return render_template('desk_space.html', dt=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
+                                                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\app.py", line 145, in get_image
+    url_image = self.parser_service.get_url_random_page_from_category(self.category_value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\parser_service.py", line 40, in get_url_random_page_from_category
+    max_page_category = self.get_count_pages(category_name)-1
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\parser_service.py", line 26, in get_count_pages
+    url = self.build_url_page_image(category_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\parser_service.py", line 23, in build_url_page_image
+    return tools.build_url_page_image(category_name, num_page)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EliteBook\Desktop\1code\flask_panel_bot_archive\tools.py", line 14, in build_url_page_image
+    if num_page == 0: return f"{self.conf_categories.get("prefix_url")}{self.conf_categories.get(category_name)}"
+                                ^^^^
+NameError: name 'self' is not defined
+2025-02-28 18:55:48,971 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [28/Feb/2025 18:55:48] "[35m[1mGET /desk_space HTTP/1.1[0m" 500 -
+2025-02-28 18:56:07,984 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:56:28,078 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:56:48,205 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:57:08,312 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:57:20,058 INFO root Thread-1 (start_app) : start web app
+2025-02-28 18:57:20,058 INFO root Thread-2 (start_bot) : start bot telegram
+2025-02-28 18:57:20,058 INFO root Thread-3 (receiver_chan_status_bot) : start receiver channel
+2025-02-28 18:57:20,062 DEBUG urllib3.connectionpool Thread-2 (start_bot) : Starting new HTTPS connection (1): api.telegram.org:443
+2025-02-28 18:57:20,071 INFO werkzeug Thread-1 (start_app) : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-02-28 18:57:20,071 INFO werkzeug Thread-1 (start_app) : [33mPress CTRL+C to quit[0m
+2025-02-28 18:57:20,502 DEBUG urllib3.connectionpool Thread-2 (start_bot) : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getMe HTTP/11" 200 270
+2025-02-28 18:57:20,509 DEBUG urllib3.connectionpool PollingThread : Starting new HTTPS connection (1): api.telegram.org:443
+2025-02-28 18:57:25,576 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:25,949 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime HTTP/11" 301 0
+2025-02-28 18:57:26,188 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/ HTTP/11" 200 None
+2025-02-28 18:57:26,218 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:26,549 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p55 HTTP/11" 301 0
+2025-02-28 18:57:26,777 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p55/ HTTP/11" 200 None
+2025-02-28 18:57:26,837 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:27,186 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/99101991/ HTTP/11" 200 None
+2025-02-28 18:57:27,220 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:27,647 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/99101990/ HTTP/11" 200 None
+2025-02-28 18:57:27,668 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:28,175 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261312/ HTTP/11" 200 None
+2025-02-28 18:57:28,211 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:29,243 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261321/ HTTP/11" 200 None
+2025-02-28 18:57:29,261 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:29,667 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261324/ HTTP/11" 200 None
+2025-02-28 18:57:29,686 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:30,345 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261326/ HTTP/11" 200 None
+2025-02-28 18:57:30,366 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:30,794 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261327/ HTTP/11" 200 None
+2025-02-28 18:57:30,835 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:31,745 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261334/ HTTP/11" 200 None
+2025-02-28 18:57:31,783 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:32,275 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261336/ HTTP/11" 200 None
+2025-02-28 18:57:32,297 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:32,725 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261338/ HTTP/11" 200 None
+2025-02-28 18:57:32,758 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:33,230 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261340/ HTTP/11" 200 None
+2025-02-28 18:57:33,283 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:33,728 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261341/ HTTP/11" 200 None
+2025-02-28 18:57:33,799 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:34,222 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261343/ HTTP/11" 200 None
+2025-02-28 18:57:34,263 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:34,946 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261349/ HTTP/11" 200 None
+2025-02-28 18:57:35,001 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:36,108 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261352/ HTTP/11" 200 None
+2025-02-28 18:57:36,151 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:36,617 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261358/ HTTP/11" 200 None
+2025-02-28 18:57:36,654 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:37,215 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261365/ HTTP/11" 200 None
+2025-02-28 18:57:37,267 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:37,758 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261368/ HTTP/11" 200 None
+2025-02-28 18:57:37,799 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:38,225 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382261372/ HTTP/11" 200 None
+2025-02-28 18:57:38,294 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:38,829 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382259612/ HTTP/11" 200 None
+2025-02-28 18:57:38,910 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:39,455 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382257685/ HTTP/11" 200 None
+2025-02-28 18:57:39,513 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:39,989 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382257719/ HTTP/11" 200 None
+2025-02-28 18:57:40,042 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:40,439 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/382257736/ HTTP/11" 200 None
+2025-02-28 18:57:40,477 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:40,871 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:57:40,926 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/379285727/ HTTP/11" 200 None
+2025-02-28 18:57:40,987 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:41,295 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime HTTP/11" 301 0
+2025-02-28 18:57:41,516 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/ HTTP/11" 200 None
+2025-02-28 18:57:41,569 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:41,919 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p1088 HTTP/11" 301 0
+2025-02-28 18:57:42,139 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p1088/ HTTP/11" 200 None
+2025-02-28 18:57:42,185 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:42,627 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344474660/ HTTP/11" 200 None
+2025-02-28 18:57:42,685 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:43,118 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344434040/ HTTP/11" 200 None
+2025-02-28 18:57:43,172 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:43,855 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344434032/ HTTP/11" 200 None
+2025-02-28 18:57:43,920 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:44,349 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344474779/ HTTP/11" 200 None
+2025-02-28 18:57:44,413 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:44,906 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344474814/ HTTP/11" 200 None
+2025-02-28 18:57:44,953 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:45,388 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343837068/ HTTP/11" 200 None
+2025-02-28 18:57:45,436 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:45,867 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882141/ HTTP/11" 200 None
+2025-02-28 18:57:45,914 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:46,328 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882168/ HTTP/11" 200 None
+2025-02-28 18:57:46,389 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:46,768 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882022/ HTTP/11" 200 None
+2025-02-28 18:57:46,831 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:47,348 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882068/ HTTP/11" 200 None
+2025-02-28 18:57:47,413 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:48,136 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882039/ HTTP/11" 200 None
+2025-02-28 18:57:48,207 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:48,735 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882155/ HTTP/11" 200 None
+2025-02-28 18:57:48,792 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:50,559 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882087/ HTTP/11" 200 None
+2025-02-28 18:57:50,636 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:51,216 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882097/ HTTP/11" 200 None
+2025-02-28 18:57:51,291 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:51,843 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882124/ HTTP/11" 200 None
+2025-02-28 18:57:51,923 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:52,457 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/343882014/ HTTP/11" 200 None
+2025-02-28 18:57:52,511 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:52,986 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344088216/ HTTP/11" 200 None
+2025-02-28 18:57:53,045 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:53,900 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344088399/ HTTP/11" 200 None
+2025-02-28 18:57:53,990 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:54,444 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344088466/ HTTP/11" 200 None
+2025-02-28 18:57:54,524 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:55,010 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344858620/ HTTP/11" 200 None
+2025-02-28 18:57:55,062 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:55,766 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344858654/ HTTP/11" 200 None
+2025-02-28 18:57:55,789 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:56,355 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344858596/ HTTP/11" 200 None
+2025-02-28 18:57:56,414 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:56,965 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344858676/ HTTP/11" 200 None
+2025-02-28 18:57:57,013 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:57,545 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/344273919/ HTTP/11" 200 None
+2025-02-28 18:57:57,579 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:57,999 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime HTTP/11" 301 0
+2025-02-28 18:57:58,257 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/ HTTP/11" 200 None
+2025-02-28 18:57:58,349 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:58,767 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p2225 HTTP/11" 301 0
+2025-02-28 18:57:59,017 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p2225/ HTTP/11" 200 None
+2025-02-28 18:57:59,085 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:57:59,707 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338953/ HTTP/11" 200 None
+2025-02-28 18:57:59,768 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:00,266 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338952/ HTTP/11" 200 None
+2025-02-28 18:58:00,294 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:00,788 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338950/ HTTP/11" 200 None
+2025-02-28 18:58:00,845 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:01,005 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:58:01,257 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338949/ HTTP/11" 200 None
+2025-02-28 18:58:01,287 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:01,737 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338948/ HTTP/11" 200 None
+2025-02-28 18:58:01,786 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:02,337 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338947/ HTTP/11" 200 None
+2025-02-28 18:58:02,401 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:02,897 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338946/ HTTP/11" 200 None
+2025-02-28 18:58:02,952 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:03,378 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338945/ HTTP/11" 200 None
+2025-02-28 18:58:03,435 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:03,897 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338944/ HTTP/11" 200 None
+2025-02-28 18:58:03,947 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:04,545 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338943/ HTTP/11" 200 None
+2025-02-28 18:58:04,621 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:05,058 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338919/ HTTP/11" 200 None
+2025-02-28 18:58:05,105 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:06,167 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338918/ HTTP/11" 200 None
+2025-02-28 18:58:06,219 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:06,891 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338917/ HTTP/11" 200 None
+2025-02-28 18:58:06,943 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:07,388 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338916/ HTTP/11" 200 None
+2025-02-28 18:58:07,446 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:08,078 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338915/ HTTP/11" 200 None
+2025-02-28 18:58:08,130 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:08,685 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338914/ HTTP/11" 200 None
+2025-02-28 18:58:08,756 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:09,366 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338913/ HTTP/11" 200 None
+2025-02-28 18:58:09,423 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:09,875 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338885/ HTTP/11" 200 None
+2025-02-28 18:58:09,930 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:10,380 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338884/ HTTP/11" 200 None
+2025-02-28 18:58:10,426 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:10,951 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338882/ HTTP/11" 200 None
+2025-02-28 18:58:11,017 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:11,390 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338881/ HTTP/11" 200 None
+2025-02-28 18:58:11,436 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:12,130 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338880/ HTTP/11" 200 None
+2025-02-28 18:58:12,188 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:12,874 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338879/ HTTP/11" 200 None
+2025-02-28 18:58:12,938 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:13,347 DEBUG urllib3.connectionpool Thread-4 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/96338878/ HTTP/11" 200 None
+2025-02-28 18:58:13,405 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [28/Feb/2025 18:58:13] "GET /desk_space HTTP/1.1" 200 -
+2025-02-28 18:58:21,153 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:58:39,495 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:40,365 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime HTTP/11" 301 0
+2025-02-28 18:58:40,634 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/ HTTP/11" 200 None
+2025-02-28 18:58:40,681 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:41,265 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:58:42,225 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p704 HTTP/11" 301 0
+2025-02-28 18:58:42,881 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p704/ HTTP/11" 200 None
+2025-02-28 18:58:42,936 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:43,962 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376222453/ HTTP/11" 200 None
+2025-02-28 18:58:44,008 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:44,342 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216292/ HTTP/11" 200 None
+2025-02-28 18:58:44,366 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:44,704 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216294/ HTTP/11" 200 None
+2025-02-28 18:58:44,729 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:45,064 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216270/ HTTP/11" 200 None
+2025-02-28 18:58:45,094 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:45,477 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216250/ HTTP/11" 200 None
+2025-02-28 18:58:45,527 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:45,893 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216176/ HTTP/11" 200 None
+2025-02-28 18:58:45,922 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:46,274 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216178/ HTTP/11" 200 None
+2025-02-28 18:58:46,318 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:47,815 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216180/ HTTP/11" 200 None
+2025-02-28 18:58:47,882 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:48,226 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216184/ HTTP/11" 200 None
+2025-02-28 18:58:48,303 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:48,674 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216102/ HTTP/11" 200 None
+2025-02-28 18:58:48,754 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:49,095 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216112/ HTTP/11" 200 None
+2025-02-28 18:58:49,148 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:49,525 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376216073/ HTTP/11" 200 None
+2025-02-28 18:58:49,577 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:50,045 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376214005/ HTTP/11" 200 None
+2025-02-28 18:58:50,102 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:50,468 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376213903/ HTTP/11" 200 None
+2025-02-28 18:58:50,493 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:50,971 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376213771/ HTTP/11" 200 None
+2025-02-28 18:58:51,033 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:51,517 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376213753/ HTTP/11" 200 None
+2025-02-28 18:58:51,580 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:52,027 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/370915207/ HTTP/11" 200 None
+2025-02-28 18:58:52,101 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:52,625 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/370915208/ HTTP/11" 200 None
+2025-02-28 18:58:52,684 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:53,118 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/370915210/ HTTP/11" 200 None
+2025-02-28 18:58:53,174 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:53,646 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/370915212/ HTTP/11" 200 None
+2025-02-28 18:58:53,699 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:54,283 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/370915214/ HTTP/11" 200 None
+2025-02-28 18:58:54,335 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:55,289 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/370915217/ HTTP/11" 200 None
+2025-02-28 18:58:55,350 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:55,816 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/370915218/ HTTP/11" 200 None
+2025-02-28 18:58:55,874 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:56,628 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376111067/ HTTP/11" 200 None
+2025-02-28 18:58:56,673 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:57,067 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime HTTP/11" 301 0
+2025-02-28 18:58:57,336 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/ HTTP/11" 200 None
+2025-02-28 18:58:57,414 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:57,852 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p664 HTTP/11" 301 0
+2025-02-28 18:58:58,087 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p664/ HTTP/11" 200 None
+2025-02-28 18:58:58,158 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:58,648 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376573877/ HTTP/11" 200 None
+2025-02-28 18:58:58,712 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:59,206 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376573884/ HTTP/11" 200 None
+2025-02-28 18:58:59,267 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:58:59,625 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376573889/ HTTP/11" 200 None
+2025-02-28 18:58:59,683 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:00,067 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376573955/ HTTP/11" 200 None
+2025-02-28 18:59:00,099 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:00,466 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376574011/ HTTP/11" 200 None
+2025-02-28 18:59:00,489 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:01,349 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:59:01,509 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376574176/ HTTP/11" 200 None
+2025-02-28 18:59:01,569 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:02,366 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376574198/ HTTP/11" 200 None
+2025-02-28 18:59:02,392 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:02,887 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/375149359/ HTTP/11" 200 None
+2025-02-28 18:59:02,910 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:03,309 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/374831737/ HTTP/11" 200 None
+2025-02-28 18:59:03,370 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:03,767 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/374831239/ HTTP/11" 200 None
+2025-02-28 18:59:03,817 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:04,248 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/98406908/ HTTP/11" 200 None
+2025-02-28 18:59:04,305 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:04,698 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/98406907/ HTTP/11" 200 None
+2025-02-28 18:59:04,747 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:05,166 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/98406906/ HTTP/11" 200 None
+2025-02-28 18:59:05,231 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:05,689 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/98406905/ HTTP/11" 200 None
+2025-02-28 18:59:05,744 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:06,156 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376550156/ HTTP/11" 200 None
+2025-02-28 18:59:06,210 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:06,616 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/98406904/ HTTP/11" 200 None
+2025-02-28 18:59:06,670 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:08,958 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/98406903/ HTTP/11" 200 None
+2025-02-28 18:59:09,028 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:09,476 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376550152/ HTTP/11" 200 None
+2025-02-28 18:59:09,516 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:10,009 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/98406902/ HTTP/11" 200 None
+2025-02-28 18:59:10,062 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:10,466 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/98406901/ HTTP/11" 200 None
+2025-02-28 18:59:10,515 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:11,124 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376550149/ HTTP/11" 200 None
+2025-02-28 18:59:11,177 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:11,638 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376550148/ HTTP/11" 200 None
+2025-02-28 18:59:11,690 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:12,079 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376550145/ HTTP/11" 200 None
+2025-02-28 18:59:12,129 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:12,531 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /pictures/view/376550143/ HTTP/11" 200 None
+2025-02-28 18:59:12,583 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:12,953 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime HTTP/11" 301 0
+2025-02-28 18:59:13,207 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/ HTTP/11" 200 None
+2025-02-28 18:59:13,276 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:13,629 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p3915 HTTP/11" 301 0
+2025-02-28 18:59:13,829 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /sz/foto-i-kartinki/anime/p3915/ HTTP/11" 200 None
+2025-02-28 18:59:13,902 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:14,682 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064707/ HTTP/11" 200 None
+2025-02-28 18:59:14,742 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:15,150 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064115/ HTTP/11" 200 None
+2025-02-28 18:59:15,258 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:15,657 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064116/ HTTP/11" 200 None
+2025-02-28 18:59:15,704 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:16,092 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064117/ HTTP/11" 200 None
+2025-02-28 18:59:16,150 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:16,730 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064118/ HTTP/11" 200 None
+2025-02-28 18:59:16,784 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:17,309 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064172/ HTTP/11" 200 None
+2025-02-28 18:59:17,371 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:18,210 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064120/ HTTP/11" 200 None
+2025-02-28 18:59:18,256 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:18,728 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064121/ HTTP/11" 200 None
+2025-02-28 18:59:18,790 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:19,178 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064078/ HTTP/11" 200 None
+2025-02-28 18:59:19,238 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:19,835 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064084/ HTTP/11" 200 None
+2025-02-28 18:59:19,912 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:20,459 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93064085/ HTTP/11" 200 None
+2025-02-28 18:59:20,478 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:21,161 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063950/ HTTP/11" 200 None
+2025-02-28 18:59:21,235 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:21,457 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 18:59:21,662 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063951/ HTTP/11" 200 None
+2025-02-28 18:59:21,710 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:22,140 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063952/ HTTP/11" 200 None
+2025-02-28 18:59:22,182 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:22,594 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063953/ HTTP/11" 200 None
+2025-02-28 18:59:22,643 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:23,101 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063954/ HTTP/11" 200 None
+2025-02-28 18:59:23,145 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:23,601 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063955/ HTTP/11" 200 None
+2025-02-28 18:59:23,659 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:24,099 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063957/ HTTP/11" 200 None
+2025-02-28 18:59:24,162 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:24,580 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063902/ HTTP/11" 200 None
+2025-02-28 18:59:24,657 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:25,125 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063906/ HTTP/11" 200 None
+2025-02-28 18:59:25,180 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:25,999 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063907/ HTTP/11" 200 None
+2025-02-28 18:59:26,050 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:26,479 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063845/ HTTP/11" 200 None
+2025-02-28 18:59:26,530 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:26,960 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063849/ HTTP/11" 200 None
+2025-02-28 18:59:27,008 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : Starting new HTTPS connection (1): world79.spcs.bio:443
+2025-02-28 18:59:27,540 DEBUG urllib3.connectionpool Thread-6 (process_request_thread) : https://world79.spcs.bio:443 "GET /files/view/93063852/ HTTP/11" 200 None
+2025-02-28 18:59:27,585 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [28/Feb/2025 18:59:27] "GET /desk_space_random_pic HTTP/1.1" 200 -
+2025-02-28 18:59:41,604 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 19:00:01,703 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 19:00:21,805 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 19:00:41,907 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 19:01:02,007 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 19:01:22,112 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 19:01:42,220 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-02-28 19:02:02,366 DEBUG urllib3.connectionpool PollingThread : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getUpdates?offset=1&timeout=20 HTTP/11" 200 23
+2025-03-01 01:51:07,442 INFO root Thread-1 (start_app) : start web app
+2025-03-01 01:51:07,447 INFO root Thread-2 (start_bot) : start bot telegram
+2025-03-01 01:51:07,451 INFO root Thread-3 (receiver_chan_status_bot) : start receiver channel
+2025-03-01 01:51:07,452 DEBUG urllib3.connectionpool Thread-2 (start_bot) : Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-01 01:51:07,475 INFO werkzeug Thread-1 (start_app) : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-01 01:51:07,475 INFO werkzeug Thread-1 (start_app) : [33mPress CTRL+C to quit[0m
+2025-03-01 01:51:07,906 DEBUG urllib3.connectionpool Thread-2 (start_bot) : https://api.telegram.org:443 "GET /bot8165343589:AAE_GUvzzXA1u-JOV4WK0SUanzryndnbVnc/getMe HTTP/11" 200 270
+2025-03-01 01:51:07,909 DEBUG urllib3.connectionpool PollingThread : Starting new HTTPS connection (1): api.telegram.org:443
