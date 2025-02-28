@@ -5,6 +5,7 @@ from random import randint
 import sys, json
 
 from config import Config
+import tools
 
 class ParserSpcs():
 	def __init__(self, conf:Config) -> None:
@@ -13,16 +14,13 @@ class ParserSpcs():
 		self.name_categories = self.conf_base.data.keys()
 
 	def shorten_url(self, url:str) -> str:
-		try: return pyshorteners.Shortener().clckru.short(url)
-		except: return url
+		return tools.shorten_url(url)
 
 	def get_random_number_page(self, max_page:int) -> int:
-		return randint(0, max_page)
+		return tools.get_random_number_page(max_page)
 
 	def build_url_page_image(self, category_name:str, num_page:int=0) -> str:
-		# ex: https://world79.spcs.bio/sz/foto-i-kartinki/ljudi/p9 -- url page, not only image !
-		if num_page == 0: return f"{self.conf_categories.get("prefix_url")}{self.conf_categories.get(category_name)}"
-		else: return f"{self.conf_categories.get("prefix_url")}{self.conf_categories.get(category_name)}/p{num_page}"
+		return tools.build_url_page_image(category_name, num_page)
 
 	def get_count_pages(self, category_name:str) -> int:
 		url = self.build_url_page_image(category_name)
@@ -68,18 +66,3 @@ class ParserSpcs():
 					tmp.append(tmp_d[-1].replace("jpg","png"))
 		res = tmp[0]
 		return res
-
-# def get_href_content_range(url,start,stop,bot,mcid,c,d,name) -> list[str]:
-# 	tmp = []
-# 	for i in range(start,stop+1):
-# 		link = f"{url}p{i}/"
-# 		count_all = len(tmp)
-# 		tmp += get_href_content(link,bot,mcid,c,d,name,count_all)
-# 		bot.send_message(mcid,text='Выполняется обновление',reply_markup=panel.panel_status_update(len(tmp),len(tmp),c,d,name,count_all))
-# 	return tmp
-
-# # single launch for file main
-# ps = ParserSpcs("../config.json", "categories.json")
-# new_url_image = ps.get_url_random_page_from_category("human")
-# print(new_url_image)
-# sys.exit(1)

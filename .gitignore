@@ -1,3 +1,4 @@
 # list ignore files
 config.json
 __pycache__/
+app.log
