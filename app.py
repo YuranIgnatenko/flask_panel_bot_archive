@@ -1,39 +1,38 @@
-from flask import Flask, request
-from flask import render_template
+from flask import Flask, request, render_template
 
-from  botservice import BotService, ParserService, StorageRowRecordLogs, StorageRowRecordUsers, RowRecordUser, StorageRowRecordImages
-import parserservice
+import logging
 import threading
 import queue
-
-import config
-import logger
-import bd
-
 import sys
-from models import DataImage
+
+from telegram_bot_service import TelegramBotService, ParserSpcs
+from parser_service import ParserSpcs
+from config import Config
 
 class WebApp():
-	def __init__(self, chan:queue.Queue, conf:config.Config, bot_service:BotService, parser_service:ParserService, storage_images:StorageRowRecordImages, storage_logs:StorageRowRecordLogs, storage_users:StorageRowRecordUsers) -> None:
-
+	def __init__(self, chan:queue.Queue, conf:Config, bot_service:TelegramBotService, parser_service:ParserSpcs) -> None:
 		self.app = Flask(__name__)
-		self.conf = conf
-		with open(conf.get("file_log")) as file:
-			self.conf_log = file.read()
-		self.conf_users = config.Config(self.conf.get("file_users"))
-		self.conf_categories = config.Config(self.conf.get("file_categories"))
+		
+		self.conf_base = conf_base
+		self.conf_log = read_file_log()
+		self.conf_users = config.Config(self.conf_base.get("file_users"))
+
+		self.conf_categories = config.Config(self.conf_base.get("file_categories"))
 		self.parser_service = parser_service
-		self.storage_images, self.storage_logs, self.storage_users = storage_images, storage_logs, storage_users
 		self.bot_service = bot_service
 		self.collect_images = []
-		self.category_value = self.conf.get("category_value")
-		self.count_pic_value = self.conf.get("count_pic_value")
+		self.category_value = self.conf_base.get("category_value")
+		self.count_pic_value = self.conf_base.get("count_pic_value")
 		self.flagLaunchBot = False
 
 		self.setup_routes()
 
+	def read_file_log(self):
+		with open(self.conf_base.get("file_log")) as file:
+			return file.read()
 
 	def receiver_chan_status_bot(self, chan:queue.Queue) -> None:
+		logging.info("start receiver channel")
 		while True:
 			try:
 				chan_vlaue = chan.get()
@@ -49,10 +48,10 @@ class WebApp():
 
 	def render_settings(self) -> str:
 			return render_template('settings.html', 
-		var_api_key_bot = self.conf.get("bot_token"),
-		var_name_bot = self.conf.get("bot_name"),
+		var_api_key_bot = self.conf_base.get("bot_token"),
+		var_name_bot = self.conf_base.get("bot_name"),
 		var_status_bot = self.flagLaunchBot,
-		var_last_started_bot = self.conf.get("bot_last_started"))
+		var_last_started_bot = self.conf_base.get("bot_last_started"))
 
 	def setup_routes(self) -> str:
 
@@ -62,11 +61,11 @@ class WebApp():
 
 		# @self.app.route('/settings_apply', methods=['POST'])
 		# def settings_apply():
-		# 		self.conf.bot_token = request.form['bot_token']
-		# 		self.conf.bot_name = request.form['bot_name']
-		# 		self.conf.bot_last_started = request.form['bot_last_started']
-		# 		self.conf.bot_status = request.form['bot_status']
-		# 		self.conf.save()
+		# 		self.conf_base.bot_token = request.form['bot_token']
+		# 		self.conf_base.bot_name = request.form['bot_name']
+		# 		self.conf_base.bot_last_started = request.form['bot_last_started']
+		# 		self.conf_base.bot_status = request.form['bot_status']
+		# 		self.conf_base.save()
 		# 		return self.render_settings()
 
 		@self.app.route('/dash_panel')
@@ -144,30 +143,27 @@ class WebApp():
 
 
 	def start_app(self, chan:queue.Queue) -> None:
+		logging.info("start web app")
 		self.app.run(debug=False)
 
 	def start_bot(self, chan:queue.Queue) -> None:
+		logging.info("start bot telegram")
 		self.bot_service.polling()
 
 
 def main() -> None:
 	if len(sys.argv) > 1:
 		arg_namefile_config = sys.argv[1]
+		conf_base = config.Config(sys.argv[1])
 
-		conf = config.Config(sys.argv[1])
-		log = logger.Logger(conf)
-		ctrl_bd = bd.ControlBD(conf)
+		logging.basicConfig(filename=conf_base.get("file_log"), level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 		chan_signal_work_status = queue.Queue()
-		# chan_images = queue.Queue()
 		
-		storage_images = StorageRowRecordImages()
-		storage_logs = StorageRowRecordLogs()
-		storage_users = StorageRowRecordUsers()
-		bot_service = BotService(chan_signal_work_status, conf, log, ctrl_bd, storage_users)
-		parser_service = parserservice.ParserService(conf)
+		bot_service = TelegramBotService(chan_signal_work_status, conf_base)
+		parser_service = parser_service.ParserSpcs(conf_base)
 
-		webapp = WebApp(chan_signal_work_status, conf, bot_service, parser_service, storage_images, storage_logs, storage_users)
+		webapp = WebApp(chan_signal_work_status, conf_base, bot_service, parser_service)
 
 		def launch_threads() -> None:
 			thread_web_app = threading.Thread(target=webapp.start_app, args=(chan_signal_work_status,))
@@ -184,7 +180,8 @@ def main() -> None:
 
 		launch_threads()
 	else:
-		print("enter setup-params for file")
+		logging.error("Enter name file base config for setup params WebApp !")
 		return
 
-main()
+
+if __name__ == "__main__":main()

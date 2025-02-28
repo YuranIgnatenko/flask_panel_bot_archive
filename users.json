@@ -1,14 +1,16 @@
 [
-	{
-		"name":"user1234",
-		"chat_id":"488373941",
-		"category":"human",
-		"last_started":"2025-02-16:06:56:48.844979"
-	},
-	{
-		"name":"Group",
-		"chat_id":"-1002311481589",
-		"category":"humor",
-		"last_started":"2025-02-16 07:03:32.129274"
-	}
+    {
+        "name": "Игнатенко Юрий",
+        "chat_id": "488373941",
+        "category": "wallpaper",
+        "last_started": "none",
+        "admin":"1" 
+    },
+    {
+        "name": "Group",
+        "chat_id": "-1002311481589",
+        "category": "none",
+        "last_started": "none",
+        "admin":"0"
+    }
 ]

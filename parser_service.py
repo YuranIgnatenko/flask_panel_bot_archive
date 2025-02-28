@@ -1,16 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 import pyshorteners	
-from botpanel import *
-import botpanel
 from random import randint
-import config
 import sys, json
 
-class ParserService():
-	def __init__(self, conf:config.Config) -> None:
-		self.conf = conf
-		self.conf_categories = config.Config(self.conf.get("file_categories"))
+from config import Config
+
+class ParserSpcs():
+	def __init__(self, conf:Config) -> None:
+		self.conf_base = conf
+		self.conf_categories = Config(self.conf_base.get("file_categories"))
+		self.name_categories = self.conf_base.data.keys()
 
 	def shorten_url(self, url:str) -> str:
 		try: return pyshorteners.Shortener().clckru.short(url)
@@ -69,17 +69,17 @@ class ParserService():
 		res = tmp[0]
 		return res
 
-def get_href_content_range(url,start,stop,bot,mcid,c,d,name) -> list[str]:
-	tmp = []
-	for i in range(start,stop+1):
-		link = f"{url}p{i}/"
-		count_all = len(tmp)
-		tmp += get_href_content(link,bot,mcid,c,d,name,count_all)
-		bot.send_message(mcid,text='Выполняется обновление',reply_markup=panel.panel_status_update(len(tmp),len(tmp),c,d,name,count_all))
-	return tmp
+# def get_href_content_range(url,start,stop,bot,mcid,c,d,name) -> list[str]:
+# 	tmp = []
+# 	for i in range(start,stop+1):
+# 		link = f"{url}p{i}/"
+# 		count_all = len(tmp)
+# 		tmp += get_href_content(link,bot,mcid,c,d,name,count_all)
+# 		bot.send_message(mcid,text='Выполняется обновление',reply_markup=panel.panel_status_update(len(tmp),len(tmp),c,d,name,count_all))
+# 	return tmp
 
 # # single launch for file main
-# ps = ParserService("../config.json", "categories.json")
+# ps = ParserSpcs("../config.json", "categories.json")
 # new_url_image = ps.get_url_random_page_from_category("human")
 # print(new_url_image)
 # sys.exit(1)

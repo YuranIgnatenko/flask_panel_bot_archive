@@ -1,6 +1,5 @@
 from telebot import types 
-from parserservice import *
-import models
+from parser_service import *
 
 def key(text:str) -> types.KeyboardButton:
 	return types.KeyboardButton(text)
@@ -23,6 +22,7 @@ def panel_user_menu() -> types.ReplyKeyboardMarkup:
 	table = types.ReplyKeyboardMarkup(resize_keyboard=True)
 	table.row(key("Запустить"))
 	table.row(key("Остановить"))
+	table.row(key("Для разработчика"))
 	table.row(key("Помощь и связь"))
 	return table    			
 	
@@ -31,15 +31,22 @@ def panel_admin_menu() -> types.ReplyKeyboardMarkup:
 	table.row(key("Запустить"))
 	table.row(key("Остановить"))
 	table.row(key("Управление доступом"))
-	table.row(key("Отчет логи"))
-	table.row(key("Отчет по ссылкам"))
+	table.row(key("Отчет категории"))
 	table.row(key("Отчет пользователи"))
+	table.row(key("Отчет конфигурация"))
 	return table    
 
-def panel_admin_users(storage_users:models.StorageRowRecordUsers) -> types.ReplyKeyboardMarkup:
+def panel_admin_ask_yes_no() -> types.ReplyKeyboardMarkup:
 	table = types.ReplyKeyboardMarkup(resize_keyboard=True)
-	for user_row in storage_users.rows:
-		table.row(key(f"ID:{str(user.chat_id)}:{user.category}"))
+	table.row(key("yes"))
+	table.row(key("no"))
+	return table    
+
+def panel_admin_users(dict_users:dict) -> types.ReplyKeyboardMarkup:
+	table = types.ReplyKeyboardMarkup(resize_keyboard=True)
+	for user in dict_users:
+		print(user, len(dict_users))
+		table.row(key(f"({user["name"]}) ID: {str(user["chat_id"])} : {user["category"]}"))
 	table.row("Меню")
 	return table  
 
