@@ -10,6 +10,11 @@ from telegram_bot_service import TelegramBotService, ParserSpcs
 from parser_service import ParserSpcs
 from config import Config
 
+class CollectImageItem:
+	def __init__(self, index, url) -> None:
+		self.index, self.url = index, url
+
+
 class WebApp():
 	def __init__(self, chan:queue.Queue, conf_base:Config, bot_service:TelegramBotService, parser_service:ParserSpcs) -> None:
 		self.app = Flask(__name__)
@@ -79,17 +84,13 @@ class WebApp():
 		def dash_panel() -> str:
 			return render_template('dash_panel.html')
 
-		@self.app.route('/')
-		def app_root() -> str:
-			return render_template('desk_space.html')
-
 		@self.app.route('/desk_space_random_pic')
 		def desk_space_random_pic() -> str:
-			return render_template('desk_space.html', dt=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
+			return render_template('desk_space.html', collect_images=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 
 		@self.app.route('/desk_space_clear_conf')
 		def desk_space_clear_conf() -> str:
-			self.collect_imagest = []
+			self.collect_images = []
 			category_value = "human"
 			count_pic_value = "1"
 			return desk_space()
@@ -99,11 +100,15 @@ class WebApp():
 			form = request.form
 			self.category_value = form['category_value']
 			self.count_pic_value = form['count_pic_value']	
-			return render_template('desk_space.html', dt=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
-
+			return render_template('desk_space.html', collect_images=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
+		
+		@self.app.route('/')
+		def app_root() -> str:
+			return render_template('desk_space.html')
+		
 		@self.app.route('/desk_space')
 		def desk_space() -> str:
-			return render_template('desk_space.html', dt=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
+			return render_template('desk_space.html', collect_images=self.collect_images[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 
 		@self.app.route('/logs')
 		def logs():
@@ -125,26 +130,17 @@ class WebApp():
 		def parser():
 			return render_template('parser.html',conf_parser=self.conf_categories.to_str())
 
-		# @self.app.route('/parser_apply', methods=['POST'])
-		# def parser_apply():
-		# 	data = request.form['text']
-		# 	self.parser_service.conf_write("parser.txt", data)
-		# 	return render_template('parser.html',conf_parser=self.parser_service.conf_read())
+		@self.app.route('/parser_apply', methods=['POST'])
+		def parser_apply():
+			data_str = request.form['text']
+			self.conf_categories.rewrite_from_str(data_str)
+			return render_template('parser.html',conf_parser=self.conf_categories.to_str())
 
-		# @self.app.route('/parser_reset')
-		# def parser_reset():
-		# 	self.parser_service.conf_reset()
-		# 	return render_template('parser.html',conf_parser=self.parser_service.conf_read())
-
-	def get_image(self) -> list[any]:
-
-		class DataImage:
-			def __init__(self, index, url) -> None:
-				self.index, self.url = index, url
-
+	def get_image(self) -> list[CollectImageItem]:
 		for index in range(int(self.count_pic_value)):
 			url_image = self.parser_service.get_url_random_page_from_category(self.category_value)
-			self.collect_images.append(DataImage(index,url_image))
+			self.collect_images.append(CollectImageItem(len(self.collect_images)-1,url_image))
+
 		return self.collect_images
 
 

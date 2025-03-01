@@ -1,15 +1,15 @@
 {
-	"prefix_url":"https://world79.spcs.bio/sz/foto-i-kartinki/",
-	"postfix_url":"/new/",
-	"human":"ljudi",
-	"humor":"jumor-prikoly",
-	"other":"raznoe",
-	"wallpaper":"oboi-dlja-pk",
-	"abstract":"abstraktnye",
-	"anime":"anime",
-	"architectura":"arhitektura-goroda",
-	"animal":"zhivotnyj-mir",
-	"ai":"ai-art",
-	"space":"kosmos",
-	"stars":"znamenitosti"
+    "prefix_url": "https://world79.spcs.bio/sz/foto-i-kartinki/",
+    "postfix_url": "/new/",
+    "human": "ljudi",
+    "humor": "jumor-prikoly",
+    "other": "raznoe",
+    "wallpaper": "oboi-dlja-pk",
+    "abstract": "abstraktnye",
+    "anime": "anime",
+    "architectura": "arhitektura-goroda",
+    "animal": "zhivotnyj-mir",
+    "ai": "ai-art",
+    "space": "kosmos",
+    "stars": "znamenitosti"
 }

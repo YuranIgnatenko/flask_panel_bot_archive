@@ -346,12 +346,12 @@ body{background-color: black;}
 		</div>
 		<div class="top">
 			<ul>
-				{% for item in dt: %}
-					<li><a href="#img_{{ item.index }}"><img src="{{ item.link }}"></a></li>
+				{% for item in collect_images: %}
+					<li><a href="#img_{{ item.index }}"><img src="{{ item.url }}"></a></li>
 				{% endfor %}
 			</ul>
-			{% for item in dt: %}
-				<a href="#_{{ item.index }}" class="lightbox trans" id="img_{{ item.index }}"><img src="{{ item.link }}"></a>
+			{% for item in collect_images: %}
+				<a href="#_{{ item.index }}" class="lightbox trans" id="img_{{ item.index }}"><img src="{{ item.url }}"></a>
 			{% endfor %}
 		</div>
 </div>
