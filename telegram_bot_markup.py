@@ -45,7 +45,6 @@ def panel_admin_ask_yes_no() -> types.ReplyKeyboardMarkup:
 def panel_admin_users(dict_users:dict) -> types.ReplyKeyboardMarkup:
 	table = types.ReplyKeyboardMarkup(resize_keyboard=True)
 	for user in dict_users:
-		print(user, len(dict_users))
 		table.row(key(f"({user["name"]}) ID: {str(user["chat_id"])} : {user["category"]}"))
 	table.row("Меню")
 	return table  

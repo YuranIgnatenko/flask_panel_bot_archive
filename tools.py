@@ -3,6 +3,12 @@ from bs4 import BeautifulSoup
 import pyshorteners	
 from random import randint
 
+
+class CollectImageItem:
+	def __init__(self, index, url) -> None:
+		self.index, self.url = index, url
+
+
 def shorten_url(url:str) -> str:
     try: return pyshorteners.Shortener().clckru.short(url)
     except: return url

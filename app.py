@@ -9,11 +9,7 @@ import queue
 from telegram_bot_service import TelegramBotService, ParserSpcs
 from parser_service import ParserSpcs
 from config import Config
-
-class CollectImageItem:
-	def __init__(self, index, url) -> None:
-		self.index, self.url = index, url
-
+import tools
 
 class WebApp():
 	def __init__(self, chan:queue.Queue, conf_base:Config, bot_service:TelegramBotService, parser_service:ParserSpcs) -> None:
@@ -22,8 +18,9 @@ class WebApp():
 		self.conf_base = conf_base
 		self.conf_log = self.read_file_log()
 		self.conf_users = Config(self.conf_base.get("file_users"))
-
 		self.conf_categories = Config(self.conf_base.get("file_categories"))
+		self.conf_cache_collect_images = Config(self.conf_base.get("file_cache_collect_images"))
+
 		self.category_value = self.conf_base.get("category_value")
 		self.count_pic_value = self.conf_base.get("count_pic_value")
 
@@ -86,7 +83,13 @@ class WebApp():
 
 		@self.app.route('/desk_space_random_pic')
 		def desk_space_random_pic() -> str:
-			return render_template('desk_space.html', collect_images=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
+			if len(self.collect_images) > len(self.conf_cache_collect_images.data):
+				self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
+			elif len(self.collect_images) < len(self.conf_cache_collect_images.data):
+				self.collect_images = self.conf_cache_collect_images.to_collect_images()
+
+			return render_template('desk_space.html', collect_images=self.collect_images[::-1], category_value=self.conf_categories.get(), count_pic_value=self.count_pic_value)
+		
 
 		@self.app.route('/desk_space_clear_conf')
 		def desk_space_clear_conf() -> str:
@@ -99,8 +102,15 @@ class WebApp():
 		def desk_space_apply_conf():
 			form = request.form
 			self.category_value = form['category_value']
-			self.count_pic_value = form['count_pic_value']	
-			return render_template('desk_space.html', collect_images=self.get_image()[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
+			self.count_pic_value = form['count_pic_value']
+			collect_images=self.get_image()
+
+			if len(self.collect_images) > len(self.conf_cache_collect_images.data):
+				self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
+			elif len(self.collect_images) < len(self.conf_cache_collect_images.data):
+				self.collect_images = self.conf_cache_collect_images.to_collect_images()
+
+			return render_template('desk_space.html', collect_images=self.collect_images[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 		
 		@self.app.route('/')
 		def app_root() -> str:
@@ -108,6 +118,12 @@ class WebApp():
 		
 		@self.app.route('/desk_space')
 		def desk_space() -> str:
+
+			if len(self.collect_images) > len(self.conf_cache_collect_images.data):
+				self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
+			elif len(self.collect_images) < len(self.conf_cache_collect_images.data):
+				self.collect_images = self.conf_cache_collect_images.to_collect_images()
+
 			return render_template('desk_space.html', collect_images=self.collect_images[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 
 		@self.app.route('/logs')
@@ -136,11 +152,13 @@ class WebApp():
 			self.conf_categories.rewrite_from_str(data_str)
 			return render_template('parser.html',conf_parser=self.conf_categories.to_str())
 
-	def get_image(self) -> list[CollectImageItem]:
+	def get_image(self) -> list[tools.CollectImageItem]:
 		for index in range(int(self.count_pic_value)):
 			url_image = self.parser_service.get_url_random_page_from_category(self.category_value)
-			self.collect_images.append(CollectImageItem(len(self.collect_images)-1,url_image))
+			self.collect_images.append(tools.CollectImageItem(len(self.collect_images)-1,url_image))
 
+		# self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
+		
 		return self.collect_images
 
 
