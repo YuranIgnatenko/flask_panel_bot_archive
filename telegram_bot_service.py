@@ -74,8 +74,7 @@ class TelegramBotService():
 				logging.info("admin mode is ok")
 				self.bot.send_message(msg_chat_id,text="Режим Администратора",reply_markup=panel_admin_menu())    	
 			
-			
-			if str(mt).startswith("ID:"):
+			if str(mt).find("ID:") != -1:
 				val_id = int(mt.split("ID:")[1].split(':')[0])
 				self.flagSelectedID = val_id
 				self.bot.send_message(msg_chat_id,text=val_id,reply_markup=panel_admin_set_value(self.name_categories))
