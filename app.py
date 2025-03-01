@@ -128,7 +128,6 @@ class WebApp():
 
 		@self.app.route('/logs')
 		def logs():
-			# self.storage_logs.update()
 			return render_template('logs.html', logs_text=self.conf_log)
 
 		@self.app.route('/users')
@@ -155,10 +154,7 @@ class WebApp():
 	def get_image(self) -> list[tools.CollectImageItem]:
 		for index in range(int(self.count_pic_value)):
 			url_image = self.parser_service.get_url_random_page_from_category(self.category_value)
-			self.collect_images.append(tools.CollectImageItem(len(self.collect_images)-1,url_image))
-
-		# self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
-		
+			self.collect_images.append(tools.CollectImageItem(len(self.collect_images)-1,url_image))		
 		return self.collect_images
 
 
