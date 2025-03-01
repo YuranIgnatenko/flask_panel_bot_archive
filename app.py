@@ -5,6 +5,7 @@ import argparse
 import logging
 import threading
 import queue
+import random
 
 from telegram_bot_service import TelegramBotService, ParserSpcs
 from parser_service import ParserSpcs
@@ -30,8 +31,15 @@ class WebApp():
 		self.collect_images = []
 		
 		self.flagLaunchBot = False
+		self.flagIsLoadedImagesFromCache = False
 
 		self.setup_routes()
+		self.setup_images_cache()
+
+	def setup_images_cache(self) -> None:
+		if self.flagIsLoadedImagesFromCache == False:
+			self.collect_images = self.conf_cache_collect_images.to_collect_images()
+			self.flagIsLoadedImagesFromCache =  True
 
 	def read_file_log(self) -> str:
 		with open(self.conf_base.get("file_log")) as file:
@@ -83,33 +91,26 @@ class WebApp():
 
 		@self.app.route('/desk_space_random_pic')
 		def desk_space_random_pic() -> str:
-			if len(self.collect_images) > len(self.conf_cache_collect_images.data):
-				self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
-			elif len(self.collect_images) < len(self.conf_cache_collect_images.data):
-				self.collect_images = self.conf_cache_collect_images.to_collect_images()
-
-			return render_template('desk_space.html', collect_images=self.collect_images[::-1], category_value=self.conf_categories.get(), count_pic_value=self.count_pic_value)
+			self.collect_images +=  self.get_collect_image_random_categories()
+			self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
+			return render_template('desk_space.html', collect_images=self.collect_images[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 		
 
 		@self.app.route('/desk_space_clear_conf')
 		def desk_space_clear_conf() -> str:
 			self.collect_images = []
+			self.conf_cache_collect_images.data = []
 			category_value = "human"
 			count_pic_value = "1"
-			return desk_space()
+			return render_template('desk_space.html', collect_images=self.collect_images[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 
 		@self.app.route('/desk_space_apply_conf', methods=['POST'])
 		def desk_space_apply_conf():
 			form = request.form
 			self.category_value = form['category_value']
-			self.count_pic_value = form['count_pic_value']
-			collect_images=self.get_image()
-
-			if len(self.collect_images) > len(self.conf_cache_collect_images.data):
-				self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
-			elif len(self.collect_images) < len(self.conf_cache_collect_images.data):
-				self.collect_images = self.conf_cache_collect_images.to_collect_images()
-
+			self.count_pic_value = int(form['count_pic_value'])
+			self.collect_images += self.get_collect_image()
+			self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
 			return render_template('desk_space.html', collect_images=self.collect_images[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 		
 		@self.app.route('/')
@@ -118,12 +119,6 @@ class WebApp():
 		
 		@self.app.route('/desk_space')
 		def desk_space() -> str:
-
-			if len(self.collect_images) > len(self.conf_cache_collect_images.data):
-				self.conf_cache_collect_images.rewrite_from_collect_image_item(self.collect_images)
-			elif len(self.collect_images) < len(self.conf_cache_collect_images.data):
-				self.collect_images = self.conf_cache_collect_images.to_collect_images()
-
 			return render_template('desk_space.html', collect_images=self.collect_images[::-1], category_value=self.category_value, count_pic_value=self.count_pic_value)
 
 		@self.app.route('/logs')
@@ -151,12 +146,21 @@ class WebApp():
 			self.conf_categories.rewrite_from_str(data_str)
 			return render_template('parser.html',conf_parser=self.conf_categories.to_str())
 
-	def get_image(self) -> list[tools.CollectImageItem]:
+	def get_collect_image(self) -> list[tools.CollectImageItem]:
+		temp_collect_images = []
 		for index in range(int(self.count_pic_value)):
 			url_image = self.parser_service.get_url_random_page_from_category(self.category_value)
-			self.collect_images.append(tools.CollectImageItem(len(self.collect_images)-1,url_image))		
-		return self.collect_images
+			temp_collect_images.append(tools.CollectImageItem(len(self.collect_images)+len(temp_collect_images)-1,url_image))		
+		return temp_collect_images
 
+	def get_collect_image_random_categories(self) -> list[tools.CollectImageItem]:
+		temp_collect_images = []
+		for index in range(int(self.count_pic_value)):
+			categories = list(self.conf_categories.data.keys())
+			self.category_value = categories[random.randint(0,len(categories)-1)]
+			url_image = self.parser_service.get_url_random_page_from_category(self.category_value)
+			temp_collect_images.append(tools.CollectImageItem(len(self.collect_images)+len(temp_collect_images)-1,url_image))		
+		return temp_collect_images
 
 	def start_app(self, chan:queue.Queue) -> None:
 		logging.info("start web app")
